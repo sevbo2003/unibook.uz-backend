@@ -1,3 +1,5 @@
+## Resources
+Database design: [link](https://drawsql.app/sevbo/diagrams/unibook-uz)
 # How To Use
 1. Clone the repository
  - ```bash
