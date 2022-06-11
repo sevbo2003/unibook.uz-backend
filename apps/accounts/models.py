@@ -30,6 +30,12 @@ class User(AbstractUser):
             return self.date_joined.strftime('%d %b')
         return self.date_joined.strftime('%d %b, %Y')
     
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        return 'https://discuss.flarum.org/assets/avatars/oftWsKuTIyGBpF47.png'
+    
     class Meta:
         ordering = ["-date_joined"]
 
