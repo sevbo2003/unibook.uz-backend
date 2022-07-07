@@ -6,10 +6,8 @@ from apps.authentication.validators import validate_user
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("username", "email", "password", "bio", "avatar")
-        extra_kwargs = {
-            "username": {"required": True, "validators": [validate_user]}
-        }
+        fields = ("username", "email", "password")
+        extra_kwargs = {"username": {"validators": [validate_user]}}
 
     def create(self, validated_data):
         user = User(username=validated_data["username"], email=validated_data["email"])
@@ -17,12 +15,3 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-
-    def update(self, instance, validated_data):
-        instance.username = validated_data.get("username", instance.username)
-        instance.bio = validated_data.get("bio", instance.bio)
-        instance.avatar = validated_data.get("avatar", instance.avatar)
-        password = validated_data["password"]
-        instance.set_password(password)
-        instance.save()
-        return instance

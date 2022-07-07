@@ -3,13 +3,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt import views as jwt_views
-from apps.authentication.api import RegisterView, LoginView, LogoutView
+from apps.authentication.api import RegisterView, LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('config.routers')),
     path('auth/register/', RegisterView.as_view(), name='register'),
-    path("auth/login/", LoginView.as_view(), name='login'),
+    path("auth/login/", jwt_views.TokenObtainPairView.as_view(), name='login'),
     path("auth/logout/", LogoutView.as_view(), name='logout'),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

@@ -7,5 +7,5 @@ from apps.accounts.pagination import CustomPagination
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    http_method_names = ['get', 'head', 'options']
+    http_method_names = ['get', 'head', 'patch']
     pagination_class = CustomPagination
