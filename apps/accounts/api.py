@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from apps.forum.question.serializers import QuestionSerializer, CommentSerializer
 from apps.accounts.permissions import IsUserOrReadOnly
 from apps.accounts.filters import UserFilter
+from rest_framework import status
 
 
 class UserViewSet(ModelViewSet):
@@ -19,22 +20,25 @@ class UserViewSet(ModelViewSet):
 
     @action(detail=False, methods=['get', 'patch'])
     def me(self, request, pk=None):
-        if request.method == 'GET':
-            user = request.user
-            serializer = UserSerializer(user)
-            return Response(serializer.data)
-        elif request.method == 'PATCH':
-            user = request.user
-            data = request.data
-            serializer = UserSerializer(user, data=data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
+        if request.user.is_authenticated:
+            if request.method == 'GET':
+                user = request.user
+                serializer = UserSerializer(user)
                 return Response(serializer.data)
+            elif request.method == 'PATCH':
+                user = request.user
+                data = request.data
+                serializer = UserSerializer(user, data=data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response({"warn": "Please enter valid informations"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                    
             else:
-                return Response({"wanr": "Please enter valid informations"}, status=400)
-                
+                return Response({"message": "What do you want to do dude"})
         else:
-            return Response({"message": "What do you want to do dude"})
+            return Response({"message": "You should login to see your status"} ,status=status.HTTP_404_NOT_FOUND)
     
 
     @action(detail=True, methods=['get'])
