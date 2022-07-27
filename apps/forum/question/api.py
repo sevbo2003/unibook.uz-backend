@@ -44,6 +44,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 return Question.objects.order_by('creation_date')
             print("Worked")
             return Question.objects.order_by('-creation_date')
+        if self.request.GET.get('category'):
+            x = self.request.GET.get('category')
+            return Question.objects.filter(main_category__slug=x)
         return Question.objects.order_by('-creation_date')
 
     def retrieve(self, request, *args, **kwargs):

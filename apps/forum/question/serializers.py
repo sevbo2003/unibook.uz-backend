@@ -6,16 +6,18 @@ from apps.accounts.serializers import UserSerializer
 class MainCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = MainCategory
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'slug']
+        read_only_fields = ['slug']
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
-        fields = ["id", "name", "main_category"]
+        fields = ["id", "name", 'slug', "main_category"]
+        read_only_fields = ['slug']
+
 
 class QuestionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Question
         fields = ["id", "title", "body", "user", "main_category", "sub_category", "creation_date", "has_true_answer","view_count", "answers_count", "likes_count"]
